@@ -1,79 +1,57 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+### React Context Approach:
 
-# Getting Started
+1. **What is React Context?**
+   - React Context is an API built into React that allows you to share data across components without manually passing props at every level.
+   - It acts as a global storage space for your components, making it easier to pass down data.
+2. **When to Use React Context?**
+   - Use React context when you need to pass data that can be used in **any component** within your application.
+   - Examples of suitable data for context include:
+     - Theme data (e.g., dark or light mode)
+     - User data (e.g., the currently authenticated user)
+     - Location-specific data (e.g., user language or locale)
+   - Place data on React context that doesn't need frequent updates, as context is not designed as a full state management system.
+3. **Problem Solved by React Context: Props Drilling**
+   - React context helps avoid **props drilling**, which occurs when you pass props down multiple levels to nested components that don't immediately need them.
+   - With context, you can bypass using props entirely, thus eliminating the issue of props drilling.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+### `use-context-selector` Package:
 
-## Step 1: Start the Metro Server
+1. **What Is It?**
+   - The `use-context-selector` package provides a solution to the performance issue associated with React context.
+   - When a context value changes, all components using `useContext` re-render, even if they only need a specific part of the context.
+   - `use-context-selector` aims to solve this problem by allowing you to select specific parts of the context to consume.
+2. **How Does It Work?**
+   - It exposes the `useContextSelector` hook, which lets you retrieve context-selected values based on a selector function.
+   - Unlike plain `useContext`, it triggers re-renders only when the selected value changes.
+   - The selector should return referentially equal results for the same input to optimize performance.
+3. **Example Usage:**
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+   ```jsx
+   import React, {createContext} from 'react';
+   import {useContextSelector} from 'use-context-selector';
 
-To start Metro, run the following command from the _root_ of your React Native project:
+   const context = createContext(null);
 
-```bash
-# using npm
-npm start
+   const Counter1 = () => {
+     const count1 = useContextSelector(context, v => v[0].count1);
+     // Other logic...
+   };
 
-# OR using Yarn
-yarn start
-```
+   const Counter2 = () => {
+     const count2 = useContextSelector(context, v => v[0].count2);
+     // Other logic...
+   };
 
-## Step 2: Start your Application
+   // Usage in your component tree
+   // ...
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+   // Create context and wrap your component tree with it
+   // Set values on the context provider using the `value` prop
+   // Read those values within any component using `useContextSelector`
+   ```
 
-### For Android
+### Why Use `use-context-selector`?
 
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- If you want granular control over which parts of the context trigger re-renders, `use-context-selector` is a powerful tool.
+- It allows you to optimize performance by selecting only the relevant context data.
+- Consider using it when you need fine-grained context consumption without unnecessary re-renders.
