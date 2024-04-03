@@ -55,3 +55,10 @@
 - If you want granular control over which parts of the context trigger re-renders, `use-context-selector` is a powerful tool.
 - It allows you to optimize performance by selecting only the relevant context data.
 - Consider using it when you need fine-grained context consumption without unnecessary re-renders.
+
+<br/>
+<p align="center">
+  <img src="img/output.gif" alt="output">
+</p>
+
+<br/>
