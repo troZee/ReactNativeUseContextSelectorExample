@@ -2,7 +2,7 @@ import * as React from 'react';
 import {View} from 'react-native';
 import {randomColor} from './randomColor';
 
-export function ComponentA() {
+export function ComponentASelector() {
   return (
     <View
       style={{
